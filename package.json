@@ -23,7 +23,6 @@
     "type": "git"
   },
   "main": "dist/client/index.js",
-  "react-native": "dist/client/react/react-native.js",
   "scripts": {
     "gen-types:cdk": "rm -rf custom-auth && tsc --project cdk/lib/tsconfig.json --declarationDir . --declaration --emitDeclarationOnly && mv ./cognito-passwordless.d.ts cdk.d.ts && tsc --project cdk/custom-auth/tsconfig.json --declarationDir ./custom-auth --declaration --emitDeclarationOnly",
     "gen-types:client": "rm -rf react && tsc --project client/tsconfig.json --declarationDir . --declaration --emitDeclarationOnly",
@@ -70,10 +69,6 @@
     },
     "./react": {
       "import": "./dist/client/react/index.js",
-      "types": "./react/index.d.ts"
-    },
-    "./react-native": {
-      "import": "./dist/client/react/react-native.js",
       "types": "./react/index.d.ts"
     },
     "./refresh": {
@@ -145,11 +140,10 @@
     "cbor": "^9.0.1"
   },
   "peerDependencies": {
-    "aws-cdk-lib": ">=2.0.0",
-    "cdk-nag": ">=2.0.0",
-    "constructs": ">=10.0.0",
+    "aws-cdk-lib": ">=2.124.0",
+    "cdk-nag": ">=2.28.26",
+    "constructs": ">=10.3.0",
     "esbuild": "*",
-    "react": ">=17.0.0",
-    "react-native-passkey": ">=1.1.1"
+    "react": ">=18.2.0"
   }
 }
