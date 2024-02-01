@@ -23,6 +23,14 @@ import {
   AdminGetUserCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { logger, UserFacingError } from "./common.js";
+import {
+  getAddedHtmlTemplate,
+  getAddedTextTemplate,
+} from "./email-templates/passkey-added-template.js";
+import {
+  getRemovedHtmlTemplate,
+  getRemovedTextTemplate,
+} from "./email-templates/passkey-removed-template.js";
 
 let ses = new SESClient({});
 const cognito = new CognitoIdentityProviderClient({});
@@ -93,22 +101,22 @@ async function createEmailContent({
     html: {
       data:
         eventType === "FIDO2_CREDENTIAL_CREATED"
-          ? `<html><body><p>This passkey has been added to your account: ${friendlyName}</p></body></html>`
-          : `<html><body><p>This passkey has been removed from your account: ${friendlyName}</p></body></html>`,
+          ? getAddedHtmlTemplate(friendlyName)
+          : getRemovedHtmlTemplate(friendlyName),
       charSet: "UTF-8",
     },
     text: {
       data:
         eventType === "FIDO2_CREDENTIAL_CREATED"
-          ? `This passkey has been added to your account: ${friendlyName}`
-          : `This passkey has been removed from your account: ${friendlyName}`,
+          ? getAddedTextTemplate(friendlyName)
+          : getRemovedTextTemplate(friendlyName),
       charSet: "UTF-8",
     },
     subject: {
       data:
         eventType === "FIDO2_CREDENTIAL_CREATED"
-          ? "A passkey has been added to your account"
-          : "A passkey has been removed from your account",
+          ? "Passkey Added to Your ConnectP2P.com Account"
+          : "Passkey Removed from Your ConnectP2P.com Account",
       charSet: "UTF-8",
     },
   };

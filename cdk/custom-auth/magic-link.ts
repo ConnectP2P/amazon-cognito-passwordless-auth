@@ -41,6 +41,10 @@ import {
   UserFacingError,
   handleConditionalCheckFailedException,
 } from "./common.js";
+import {
+  getHtmlTemplate,
+  getTextTemplate,
+} from "./email-templates/sign-in-templates.js";
 
 let config = {
   /** Should Magic Link sign-in be enabled? If set to false, clients cannot sign-in with magic links (an error is shown instead when they request a magic link) */
@@ -147,17 +151,21 @@ async function createEmailContent({
 }) {
   return {
     html: {
-      data: `<html><body><p>Your secret sign-in link: <a href="${secretLoginLink}">sign in</a></p>This link is valid for ${Math.floor(
-        config.secondsUntilExpiry / 60
-      )} minutes<p></p></body></html>`,
+      data: getHtmlTemplate(
+        secretLoginLink,
+        Math.floor(config.secondsUntilExpiry / 60)
+      ),
       charSet: "UTF-8",
     },
     text: {
-      data: `Your secret sign-in link: ${secretLoginLink}`,
+      data: getTextTemplate(
+        secretLoginLink,
+        Math.floor(config.secondsUntilExpiry / 60)
+      ),
       charSet: "UTF-8",
     },
     subject: {
-      data: "Your secret sign-in link",
+      data: "Your ConnectP2P.com Sign-In Link",
       charSet: "UTF-8",
     },
   };
